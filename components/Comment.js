@@ -1,14 +1,26 @@
-export default function Comment(comment) {
-    // console.log(comment);
-    const hasNestedComments = comment.comments.length > 0;
-
+export default function Story(story) {
     return `
-      <div class="nested-comments-0">
-        <p class="comment-header">
-          ${comment.user} | ${comment.time_ago}
-        </p>
-        ${comment.content}
-        ${hasNestedComments ? comment.comments.map(comment => Comment(comment)).join('') : ""}
+    <div class="story">
+      <div> 
+        <span class="gray">${story.index || ""}</span>
+        <span class="upvote">▲</span>
+        <a href="${story.url}">${story.title}</a>
+        <span>(${story.domain})</span>
       </div>
-    `
+      <div>
+        <div class="gray">
+          ${story.points} points by ${story.user} ${story.time_ago}
+          |
+          <a href="#/item?id=${story.id}">
+            ${story.comments_count} comments
+          </a>
+          |
+          <span class="favorite">
+            <img class="heart" src="https://icon.now.sh/heart/ccc">
+            ${story.isFavorite ? "Remove From Favorites" : "Add To Favorites"}
+          </span>
+        </div>
+      </div>
+    </div>
+  `;
 }

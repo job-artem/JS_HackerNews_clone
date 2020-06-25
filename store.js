@@ -1,19 +1,40 @@
-const initialState = {
-    favourites: []
+function createStore(reducer) {
+    let currentState = reducer(undefined, {});
+
+    return {
+        getState: () => currentState,
+        dispatch: action => {
+            currentState = reducer(currentState, action);
+        }
+    }
 }
 
-function favouritesReducer(state, action) {
+const initialState = {
+    favorites: []
+}
+
+function favoritesReducer(state = initialState, action) {
     switch (action.type) {
-        case "ADD_FAVOURITE":
-            const addedFavourite = action.payload.favourite;
-            const favourites = [...state.favourites, addedFavourite];
-            return { favourites };
-        case "REMOVE_FAVOURITE":
-            const removedFavourite = action.payload.favourite;
-            const favourites = state.favourites.fil
+        case "ADD_FAVORITE":
+            {
+                const addedFavorite = action.payload.favorite;
+                const favorites = [...state.favorites, addedFavorite];
+                return { favorites };
+            }
+        case "REMOVE_FAVORITE":
+            {
+                const removedFavorite = action.payload.favorite;
+                const favorites = state.favorites.filter(favorite => favorite.id !== removedFavorite.id);
+                return { favorites };
+            }
         default:
             return state;
     }
 }
 
-const action = { type: "ADD_FAVOURITE", payload: { favourite: { title: "story1 ", id: 1 } } }
+// const action = { type: "ADD_FAVORITE", payload: { favorite: { title: "story1", id: 1 } } };
+
+const store = createStore(favoritesReducer);
+// store.dispatch(action);
+// console.log(store.getState());
+export default store;
